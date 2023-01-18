@@ -1,10 +1,30 @@
 const passport = require('passport');
+const Post = require('../models/post');
 const User=require('../models/user')
 exports.profile=function(req,res)
 {       
-        if(req.isAuthenticated()){return res.render('profile');}
-        return res.redirect('/user/signin');
         
+        if(req.isAuthenticated()){
+            
+           
+
+            Post.find({}).populate('user').exec(function(err,posts){
+
+                if(err){console.log('error in fetching the posts from db');}
+
+            
+                return res.render('profile',{userposts:posts});
+
+            })
+            
+       
+        
+        }
+        else{
+            return res.redirect('/user/signin');
+        }
+        
+
       
 
 }

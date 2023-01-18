@@ -1,3 +1,26 @@
 <%-include('header')%>
 
-<h1> this profile belongs to<%= user.email%></h1>
+<form action="/post/create" method="post" style="padding: 10px;text-align: center;">
+
+    <textarea name="content" id="posttext" cols="30" rows="5" placeholder="Share What's in your mind"></textarea>
+
+    <button type="submit">post</button>
+
+
+</form>
+
+<h2> Posts</h2>
+
+<div style="width: 50%;">
+
+    <ul>
+        
+        <%for(var i of userposts){%>
+            <li><%=i.content%></li>
+            <small><%=i.user.email%></small>
+        <%}%>
+        
+
+    </ul>
+
+</div>
