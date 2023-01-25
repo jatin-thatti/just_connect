@@ -1,8 +1,7 @@
+const User = require('../models/user');
 module.exports.home=function(req,res){
     
-    console.log(req.cookies);
-    res.cookie('jaitn',1);
+    // User.findById(req.user._id)
     res.render('./index',{title:'we_connect'});
   
 }
-

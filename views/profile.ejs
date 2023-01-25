@@ -1,26 +1,41 @@
 <%-include('header')%>
-
-<form action="/post/create" method="post" style="padding: 10px;text-align: center;">
-
+<body>
+    <%-include('_flash')-%>
+<form action="/post/create" method="post" style="padding: 10px; text-align: center" id="postForm">
     <textarea name="content" id="posttext" cols="30" rows="5" placeholder="Share What's in your mind"></textarea>
 
     <button type="submit">post</button>
-
-
 </form>
 
-<h2> Posts</h2>
 
-<div style="width: 50%;">
-
-    <ul>
+    
+    <div id="content">
         
-        <%for(var i of userposts){%>
-            <li><%=i.content%></li>
-            <small><%=i.user.email%></small>
-        <%}%>
-        
+        <section id="posts">
+            
+           
+            <h2>Posts</h2>
+            
+            <div style="width: 50%">
+        <%-include('_posts.ejs')-%>
+    </div>
+    
+        </section>
 
-    </ul>
 
-</div>
+        <section id="friends">
+    <h1>friends</h1>
+    <ul>    
+        <%for(i of all_user){%>
+            
+            <li><a href="/user/details/<%=i._id%>"><%=i.name%></a></li>
+            
+            <%}%>
+            
+        </ul>
+        </section>
+    
+        <script src="/javascript/home_post.js"></script>
+    </div>
+    <script src="/javascript/home_comments.js"></script>
+</body>

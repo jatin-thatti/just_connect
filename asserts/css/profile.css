@@ -1,0 +1,14 @@
+#content {
+  display: flex; }
+  #content #posts {
+    width: 80%;
+    padding: 10px;
+    border-top: 1px solid lightgrey;
+  }
+  #friends{
+    width: 30%;
+      padding: 10px;
+      border-left: 1px solid lightgrey;
+      border-top: 1px solid lightgrey;
+      
+  }

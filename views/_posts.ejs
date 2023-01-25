@@ -1,0 +1,35 @@
+<ul id="list-items">
+    <%for(var i of userposts){%>
+    
+    <div id="post-<%=i._id%>" class="postItem">
+        <%if(locals.user && locals.user.id == i.user.id){ %>
+
+            <a class="del-link" href="/post/destroy/<%=i.id%>"> x</a>
+            
+        <%}%>
+        <li >
+            <%=i.content%> <sub>- <%=i.user.name%></sub>
+        </li>
+        
+        <h6>Comments</h6>
+        <ul id="comment-<%=i._id%>">
+            <%for(var j of i.comments){%>
+                <li id="commentId-<%=j._id%>">
+                    <%=j.content%> <sub>- <%=j.user.name%></sub>
+                    
+                   <% if(locals.user && locals.user.id==j.user.id){%>
+                        <a href="/comment/destroy/<%=j._id%>" class="delComment">X</a>
+                    <%}%>
+                </li>
+
+                <%}%>
+
+        </ul>
+
+        <form action="/comment/addcomment/<%=i._id%>" method="post" class="comment-form">
+            <textarea name="content" id="comment" cols="30" rows="2"></textarea>
+            <button type="submit">Comment</button>
+        </form>
+    </div>
+    <%}%>
+</ul>

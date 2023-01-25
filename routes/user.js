@@ -11,4 +11,6 @@ router.post('/create',require('../controllers/users').create)
 router.post('/profile',passport.authenticate('local',{failureRedirect:'/user/signin'}),require('../controllers/users').auth)
 router.get('/profile',passport.checkauth,require('../controllers/users').profile)
 router.get('/signout',require('../controllers/users').signout)
+router.get('/details/:id',require('../controllers/users').details);
+router.post('/update/:id',require('../controllers/users').update);
 module.exports=router;

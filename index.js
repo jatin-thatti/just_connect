@@ -8,11 +8,26 @@ const session = require('express-session');
 const passport = require('passport');
 const { Store } = require('express-session');
 const MongoStore = require('connect-mongo');
+const sassMiddleware = require('node-sass-middleware');
+const flash = require('connect-flash');
 
 
 
 
 const app = express();
+
+app.use(express.static('asserts'));
+
+app.use(sassMiddleware({
+
+    src:'./asserts/scss',
+    dest:'./asserts/css',
+    debug:true,
+    outputStyle:'extended',
+    prefix:'/css'
+
+
+}))
 
 app.use(express.urlencoded())
 app.use(cookieParser())
@@ -39,9 +54,8 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(passport.setauth)
-
+app.use(flash())
+app.use(require('./config/flash'));
 app.use('/',require('./routes/index'));
-
-
 app.listen(8000,function(err){if(err)return;console.log(`the server is up on port ${8000} !`);})
 

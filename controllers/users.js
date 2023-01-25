@@ -1,21 +1,29 @@
 const passport = require('passport');
 const Post = require('../models/post');
 const User=require('../models/user')
-exports.profile=function(req,res)
+const Comment = require('../models/comment');
+exports.profile=async function(req,res)
 {       
-        
+       
         if(req.isAuthenticated()){
             
-           
+           try{
+                const posts = await Post.find({}).sort('-createdAt').populate('user').populate({path:'comments',populate:{path:'user'}})
 
-            Post.find({}).populate('user').exec(function(err,posts){
+                const data = await User.find({});
 
-                if(err){console.log('error in fetching the posts from db');}
+                return res.render('profile',{userposts:posts,all_user:data});
+
+           }catch(err){
+
+                console.log('error in loading profile page ! ',err);
+
+           }
 
             
-                return res.render('profile',{userposts:posts});
 
-            })
+
+
             
        
         
@@ -33,12 +41,13 @@ exports.signout=function(req,res)
     req.logout(function(err)
     {
         if(err){return;}
+        req.flash('success','logged Out successfully');
         return res.redirect('/user/signin');
     });
 //    return res.redirect('/user/signin');
 }
 exports.auth=function(req,res)
-{
+{   req.flash('success','Successfully Signedin');
     res.redirect('/user/profile');
 }
 exports.friends=function(req,res)
@@ -53,7 +62,7 @@ exports.posts=function(req,res)
 exports.signin=function(req,res)
 {   
     if(req.isAuthenticated()){return res.redirect('/user/profile');}
-    
+   
     res.render('signin.ejs');
 }
 exports.signup=function(req,res)
@@ -64,4 +73,21 @@ exports.create=function(req,res)
 {
    User.create(req.body,function(err,newc){if(err){console.error('there is an error in creating the user');return;}console.log(`${newc} \n created`)})
    res.redirect('/user/signin');
+}
+exports.details = function(req,res)
+{
+    User.findById({_id:req.params.id},(err,data)=>{res.render('details',{userProfile:data});})
+    
+
+}
+
+exports.update=(req,res)=>
+{
+    User.findById({_id:req.params.id},(err,user)=>
+    {
+        user.name=req.body.name;
+        user.email=req.body.email;
+        user.save();
+        res.redirect('/user/details/'+req.params.id);
+    })
 }

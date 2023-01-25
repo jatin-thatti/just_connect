@@ -2,13 +2,13 @@ const passport = require("passport");
 const User = require('../models/user');
 const LocalStrategy =  require('passport-local').Strategy;
 
-passport.use(new LocalStrategy({usernameField:'email'},function(email,password,done){
+passport.use(new LocalStrategy({usernameField:'email',passReqToCallback:true},function(req,email,password,done){
 
 
     User.findOne({email:email},function(err,user)
     {
         if(err){return done(err);}
-        if( !user || user.password!=password){return done(null,false);}
+        if( !user || user.password!=password){req.flash('error','Invalid UserName/Password');return done(null,false);}
         return done(null,user);
     });
 
@@ -35,7 +35,7 @@ passport.deserializeUser(function(id,done){
 passport.checkauth=function(req,res,next)
 {
     if(req.isAuthenticated())return next();
-    return res.redirect('/user/signin');
+    return res.redirect('back');
 }
 
 passport.setauth=function(req,res,next)

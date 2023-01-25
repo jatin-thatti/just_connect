@@ -1,0 +1,13 @@
+<%-include('header')-%>
+<h1>User Profile</h1>
+<h3><%=userProfile.name%></h3>
+
+<h3><%=userProfile.email%></h3>
+
+<%if((locals.user) && (user.id)==(userProfile.id)){%>
+    <form action="/user/update/<%=user.id%>" method="post">
+        <input type="text" name="name" placeholder="name">
+        <input type="email" name="email" placeholder="email">
+        <input type="submit" value="update">
+    </form>
+<%}%>
