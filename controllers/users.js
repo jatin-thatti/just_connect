@@ -2,6 +2,8 @@ const passport = require('passport');
 const Post = require('../models/post');
 const User=require('../models/user')
 const Comment = require('../models/comment');
+const fs = require('fs');
+const path = require('path')
 exports.profile=async function(req,res)
 {       
        
@@ -81,13 +83,41 @@ exports.details = function(req,res)
 
 }
 
-exports.update=(req,res)=>
+exports.update=async (req,res)=>
 {
-    User.findById({_id:req.params.id},(err,user)=>
+    try{
+    const user = await User.findById({_id:req.params.id});
+        
+    User.upload(req,res,function(err)
     {
+        if(err){req.flash('error','multer error!');return;}
+        
         user.name=req.body.name;
         user.email=req.body.email;
+        if(user.avatar)
+        {   
+            if(fs.existsSync(path.join(__dirname,'..',user.avatar)))
+            {
+                fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+            }
+        }
+        if(req.file)
+        {
+            user.avatar=User.avatarPath+'/' + req.file.filename; 
+        }
         user.save();
-        res.redirect('/user/details/'+req.params.id);
+        req.flash('success','Profile Updated!')
+        
     })
+        
+        
+       
+        // res.redirect('/user/details/'+req.params.id);
+
+    }catch(err)
+        {
+            req.flash('error','error in updating');
+        }
+    
+     return res.redirect('back');
 }

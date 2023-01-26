@@ -16,6 +16,7 @@ const flash = require('connect-flash');
 
 const app = express();
 
+app.use('/uploads',express.static(__dirname+'/uploads'));
 app.use(express.static('asserts'));
 
 app.use(sassMiddleware({
