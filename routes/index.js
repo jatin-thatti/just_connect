@@ -1,7 +1,7 @@
 const { application } = require('express');
 const express=require('express');
 const router=express.Router();
-
+router.use('/api',require('./api/index'));
 router.get('/',require('../controllers/home').home);
 router.use('/user',require('./user'));
 router.use('/create',require('./create'));

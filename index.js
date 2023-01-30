@@ -4,6 +4,8 @@ const User = require('./models/user');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 require('./config/passport-local');
+require('./config/passport-jwt');
+require('./config/passport-google-oauth');
 const session = require('express-session');
 const passport = require('passport');
 const { Store } = require('express-session');

@@ -10,7 +10,8 @@ exports.profile=async function(req,res)
         if(req.isAuthenticated()){
             
            try{
-                const posts = await Post.find({}).sort('-createdAt').populate('user').populate({path:'comments',populate:{path:'user'}})
+                const posts = await Post.find({}).sort('-createdAt').populate('user')
+                .populate({path:'comments',populate:{path:'user'}})
 
                 const data = await User.find({});
 

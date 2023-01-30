@@ -1,5 +1,6 @@
 const express=require('express');
 const passport = require('passport');
+const { profile } = require('../controllers/users');
 const router=express.Router();
 
 router.get('/',require('../controllers/users').profile);
@@ -13,4 +14,6 @@ router.get('/profile',passport.checkauth,require('../controllers/users').profile
 router.get('/signout',require('../controllers/users').signout)
 router.get('/details/:id',require('../controllers/users').details);
 router.post('/update/:id',require('../controllers/users').update);
+router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}))
+router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/user/signin'}),require('../controllers/users').auth)
 module.exports=router;
